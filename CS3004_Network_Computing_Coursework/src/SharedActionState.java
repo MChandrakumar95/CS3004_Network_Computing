@@ -1,114 +1,132 @@
-import java.net.*;
-import java.io.*;
-
 public class SharedActionState{
-	
-	private SharedActionState mySharedObj;
-	private String myThreadName;
-	private double mySharedVariable;
-	private boolean accessing=false; // true a thread has a lock, false otherwise
-	private int threadsWaiting=0; // number of waiting writers
 
-// Constructor	
-	
-	SharedActionState(double SharedVariable) {
-		mySharedVariable = SharedVariable;
+	private double client1Funds = 100;
+	private double client2Funds = 100;
+	private double client3Funds = 100;
+	private boolean accessing = false; // true a thread has a lock, false otherwise
+	private int threadsWaiting = 0; // number of waiting writers
+
+
+	//Attempt to acquire a lock
+
+	public synchronized void acquireLock() throws InterruptedException{
+		Thread me = Thread.currentThread(); // get a ref to the current thread
+		System.out.println(me.getName()+" is attempting to acquire a lock!");	
+		++threadsWaiting;
+		while (accessing) {  // while someone else is accessing or threadsWaiting > 0
+			System.out.println(me.getName()+" waiting to get a lock as someone else is accessing...");
+			//wait for the lock to be released - see releaseLock() below
+			wait();
+		}
+		// nobody has got a lock so get one
+		--threadsWaiting;
+		accessing = true;
+		System.out.println(me.getName()+" got a lock!"); 
 	}
 
-//Attempt to acquire a lock
+	// Releases a lock to when a thread is finished
+
+	public synchronized void releaseLock() {
+		//release the lock and tell everyone
+		accessing = false;
+		notifyAll();
+		Thread me = Thread.currentThread(); // get a ref to the current thread
+		System.out.println(me.getName()+" released a lock!");
+	}
+
+	public synchronized String addFunds(String clientID, double amountToAdd){
+		String theOutput = null;
+		switch (clientID) {
+		case "Client1":
+			client1Funds = client1Funds + amountToAdd;
+			System.out.println(clientID + "'s funds has been updated to " + client1Funds);
+			theOutput = "Transaction is complete. " + amountToAdd + " has been added to your account. \nYour Account Balance is " + client1Funds;
+			break;
+		case "Client2":
+			client2Funds = client2Funds + amountToAdd;
+			System.out.println(clientID + "'s funds has been updated to " + client2Funds);
+			theOutput = "Transaction is complete. " + amountToAdd + " has been added to your account. \nYour Account Balance is " + client2Funds;
+			break;
+		case "Client3":
+			client3Funds = client3Funds + amountToAdd;
+			System.out.println(clientID + "'s funds has been updated to " + client3Funds);
+			theOutput = "Transaction is complete. " + amountToAdd + " has been added to your account. \nYour Account Balance is " + client3Funds;
+			break;
+		default:
+			System.out.println("Invalid Bank Account!!!");
+			theOutput = "Invalid Bank Account!!!";
+			break;
+		}
+		return theOutput;
+	}
+
+	public synchronized String withdrawFunds(String clientID, double amountToWithdraw){
+		String theOutput = null;
+		switch (clientID) {
+		case "Client1":
+			client1Funds = client1Funds - amountToWithdraw;
+			System.out.println(clientID + "'s funds has been updated to " + client1Funds);
+			theOutput = "Transaction is complete. " + amountToWithdraw + " has been added to your account. \nYour Account Balance is " + client1Funds;
+			break;
+		case "Client2":
+			client2Funds = client2Funds - amountToWithdraw;
+			System.out.println(clientID + "'s funds has been updated to " + client2Funds);
+			theOutput = "Transaction is complete. " + amountToWithdraw + " has been added to your account. \nYour Account Balance is " + client2Funds;
+			break;
+		case "Client3":
+			client3Funds = client3Funds - amountToWithdraw;
+			System.out.println(clientID + "'s funds has been updated to " + client3Funds);
+			theOutput = "Transaction is complete. " + amountToWithdraw + " has been added to your account. \nYour Account Balance is " + client3Funds;
+			break;
+		default:
+			System.out.println("Invalid Bank Account!!!");
+			theOutput = "Invalid Bank Account!!!";
+			break;
+		}
+		return theOutput;
+	}
 	
-	  public synchronized void acquireLock() throws InterruptedException{
-	        Thread me = Thread.currentThread(); // get a ref to the current thread
-	        System.out.println(me.getName()+" is attempting to acquire a lock!");	
-	        ++threadsWaiting;
-		    while (accessing) {  // while someone else is accessing or threadsWaiting > 0
-		      System.out.println(me.getName()+" waiting to get a lock as someone else is accessing...");
-		      //wait for the lock to be released - see releaseLock() below
-		      wait();
-		    }
-		    // nobody has got a lock so get one
-		    --threadsWaiting;
-		    accessing = true;
-		    System.out.println(me.getName()+" got a lock!"); 
-		  }
-
-		  // Releases a lock to when a thread is finished
-		  
-		  public synchronized void releaseLock() {
-			  //release the lock and tell everyone
-		      accessing = false;
-		      notifyAll();
-		      Thread me = Thread.currentThread(); // get a ref to the current thread
-		      System.out.println(me.getName()+" released a lock!");
-		  }
-	
-	
-    /* The processInput method */
-
-	public synchronized String processInput(String myThreadName, String theInput) {
-    		System.out.println(myThreadName + " received "+ theInput);
-    		String theOutput = null;
-    		// Check what the client said
-    		if (theInput.equalsIgnoreCase("Do my action!")) {
-    			//Correct request
-    			if (myThreadName.equals("ActionServerThread1")) {
-    				/*  Add 20 to the variable
-    					multiply it by 5
-    					divide by 3.
-    				 */
-    				mySharedVariable = mySharedVariable + 20;
-       				mySharedVariable = mySharedVariable * 5;
-       				mySharedVariable = mySharedVariable / 3;
-   				System.out.println(myThreadName + " made the SharedVariable " + mySharedVariable);
-    				theOutput = "Do action completed.  Shared Variable now = " + mySharedVariable;
-    			}
-    			else if (myThreadName.equals("ActionServerThread2")) {
-    				/*	Subtract 5 from the variable
-    					Multiply it by 10 
-    					Divide by 2.5
-    					*/
-       				mySharedVariable = mySharedVariable - 5;
-       				mySharedVariable = mySharedVariable * 10;
-       				mySharedVariable = mySharedVariable / 2.5;
-    					
-    				System.out.println(myThreadName + " made the SharedVariable " + mySharedVariable);
-    				theOutput = "Do action completed.  Shared Variable now = " + mySharedVariable;
-
-    			}
-       			else if (myThreadName.equals("ActionServerThread3")) {
-       				/*	Subtract 50
-						Divide by 2
-						Multiply by 33
-       				 */
-       				mySharedVariable = mySharedVariable - 50;
-       				mySharedVariable = mySharedVariable / 2;
-       				mySharedVariable = mySharedVariable * 33;
- 
-       				System.out.println(myThreadName + " made the SharedVariable " + mySharedVariable);
-    				theOutput = "Do action completed.  Shared Variable now = " + mySharedVariable;
-
-       			}
-       			else if (myThreadName.equals("ActionServerThread4")) {
-    				/*	Multiply by 20
-						Divide by 10
-						Subtract 1
-    				 */
-       				mySharedVariable = mySharedVariable * 20;
-       				mySharedVariable = mySharedVariable / 10;
-       				mySharedVariable = mySharedVariable - 1;
-    				System.out.println(myThreadName + " made the SharedVariable " + mySharedVariable);
-    				theOutput = "Do action completed.  Shared Variable now = " + mySharedVariable;
-       			}
-       			else {System.out.println("Error - thread call not recognised.");}
-    		}
-    		else { //incorrect request
-    			theOutput = myThreadName + " received incorrect request - only understand \"Do my action!\"";
-		
-    		}
- 
-     		//Return the output message to the ActionServer
-    		System.out.println(theOutput);
-    		return theOutput;
-    	}	
+	public synchronized String transferFunds(String transferFromClientID, String tranferToClientID, double amountToTransfer){
+		String theOutput = null;
+		switch (transferFromClientID) {
+		case "Client1":
+			withdrawFunds(transferFromClientID, amountToTransfer);
+			if (tranferToClientID.equalsIgnoreCase("Client2") || tranferToClientID.equalsIgnoreCase("Client3")) {
+				addFunds(tranferToClientID, amountToTransfer);
+				theOutput = "Transaction is complete. " + amountToTransfer + " has been transfered to " + tranferToClientID + "'s account. \nYour Account Balance is " + client1Funds;
+			} else {
+				System.out.println("Invalid tranfer account!!!");
+				theOutput = "Invalid Tranfer Account!!!";
+			}
+			System.out.println("A transfer was done from " + transferFromClientID + " to " + tranferToClientID +" !!!");
+			break;
+		case "Client2":
+			withdrawFunds(transferFromClientID, amountToTransfer);
+			if (tranferToClientID.equalsIgnoreCase("Client1") || tranferToClientID.equalsIgnoreCase("Client3")) {
+				addFunds(tranferToClientID, amountToTransfer);
+				theOutput = "Transaction is complete. " + amountToTransfer + " has been transfered to " + tranferToClientID + "'s account. \nYour Account Balance is " + client2Funds;
+			} else {
+				System.out.println("Invalid tranfer account!!!");
+				theOutput = "Invalid Tranfer Account!!!";
+			}
+			System.out.println("A transfer was done from " + transferFromClientID + " to " + tranferToClientID +" !!!");
+			break;
+		case "Client3":
+			withdrawFunds(transferFromClientID, amountToTransfer);
+			if (tranferToClientID.equalsIgnoreCase("Client1") || tranferToClientID.equalsIgnoreCase("Client2")) {
+				addFunds(tranferToClientID, amountToTransfer);
+				theOutput = "Transaction is complete. " + amountToTransfer + " has been transfered to " + tranferToClientID + "'s account. \nYour Account Balance is " + client3Funds;
+			} else {
+				System.out.println("Invalid tranfer account!!!");
+				theOutput = "Invalid Tranfer Account!!!";
+			}
+			System.out.println("A transfer was done from " + transferFromClientID + " to " + tranferToClientID +" !!!");
+			break;
+		default:
+			System.out.println("Invalid Bank Account!!!");
+			theOutput = "Invalid Bank Account!!!";
+			break;
+		}
+		return theOutput;
+	}
 }
-
