@@ -1,4 +1,4 @@
-public class SharedActionState{
+public class Funds{
 
 	private double client1Funds = 100;
 	private double client2Funds = 100;
@@ -34,7 +34,7 @@ public class SharedActionState{
 		System.out.println(me.getName()+" released a lock!");
 	}
 
-	public synchronized String addFunds(String clientID, double amountToAdd){
+	private synchronized String addFunds(String clientID, double amountToAdd){
 		String theOutput = null;
 		switch (clientID) {
 		case "Client1":
@@ -60,7 +60,7 @@ public class SharedActionState{
 		return theOutput;
 	}
 
-	public synchronized String withdrawFunds(String clientID, double amountToWithdraw){
+	private synchronized String withdrawFunds(String clientID, double amountToWithdraw){
 		String theOutput = null;
 		switch (clientID) {
 		case "Client1":
@@ -86,7 +86,7 @@ public class SharedActionState{
 		return theOutput;
 	}
 	
-	public synchronized String transferFunds(String transferFromClientID, String tranferToClientID, double amountToTransfer){
+	private synchronized String transferFunds(String transferFromClientID, String tranferToClientID, double amountToTransfer){
 		String theOutput = null;
 		switch (transferFromClientID) {
 		case "Client1":
@@ -129,4 +129,63 @@ public class SharedActionState{
 		}
 		return theOutput;
 	}
+	
+	public synchronized String triggerTransactionJob(int transactionID, String currectClientID, double amount){
+		String output = null;
+		switch (transactionID) {
+		case 1:
+			output = addFunds(currectClientID, amount);
+			break;
+
+		case 2:
+			output = withdrawFunds(currectClientID, amount);
+			break;
+
+		default:
+			output = "Invalid Transaction!!!";
+			break;
+		}
+		return output;
+	}
+	
+	public synchronized String triggerTransactionJob(int transactionID, String currectClientID, String transferToClientID, double amount){
+		String output = null;
+		switch (transactionID) {
+		case 1:
+			output = addFunds(currectClientID, amount);
+			break;
+
+		case 2:
+			output = withdrawFunds(currectClientID, amount);
+			break;
+
+		case 3:
+			output = transferFunds(currectClientID, transferToClientID, amount);
+			break;
+			
+		default:
+			output = "Invalid Transaction!!!";
+			break;
+		}
+		return output;
+	}
+	
+	public synchronized String getClientBalance(String ClientID){
+		String output = null;
+		switch (ClientID) {
+		case "Client1":
+			output = "Your balance is " + client1Funds; 
+			break;
+		case "Client2":
+			output = "Your balance is " + client2Funds; 
+			break;
+		case "Client3":
+			output = "Your balance is " + client3Funds; 
+			break;
+		default:
+			break;
+		}
+		return output;
+	}
+	
 }

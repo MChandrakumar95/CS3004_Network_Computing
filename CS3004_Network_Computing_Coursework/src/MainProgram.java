@@ -21,16 +21,16 @@ public class MainProgram {
 	private static void actionClientInitiator(int i) {
 		switch (i) {
 		case 0:
-			new ActionClient("ActionClient1").start();
+			new BankClient("ActionClient1").start();
 			break;
 		case 1:
-			new ActionClient("ActionClient2").start();
+			new BankClient("ActionClient2").start();
 			break;
 		case 2:
-			new ActionClient("ActionClient3").start();
+			new BankClient("ActionClient3").start();
 			break;
 		case 3:
-			new ActionClient("ActionClient4").start();
+			new BankClient("ActionClient4").start();
 			break;
 		default:
 			break;

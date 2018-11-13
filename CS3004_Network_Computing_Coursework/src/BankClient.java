@@ -1,10 +1,10 @@
 import java.io.*;
 import java.net.*;
 
-public class ActionClient extends Thread {
+public class BankClient extends Thread {
 	String ActionClientID;
 
-	public ActionClient(String ActionClientID){
+	public BankClient(String ActionClientID){
 		this.ActionClientID = ActionClientID;
 	}
 
@@ -43,11 +43,11 @@ public class ActionClient extends Thread {
 
 
 			if (fromUser != null) {
-				System.out.println(ActionClientID + " sending " + fromUser + " to ActionServer");
+				System.out.println(ActionClientID + " sending " + fromUser + " to BankServer");
 				out.println(fromUser);
 			}
 			fromServer = in.readLine();
-			System.out.println(ActionClientID + " received " + fromServer + " from ActionServer");
+			System.out.println(ActionClientID + " received " + fromServer + " from BankServer");
 
 			// Tidy up - not really needed due to true condition in while loop
 			out.close();
