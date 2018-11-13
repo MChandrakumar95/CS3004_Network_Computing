@@ -3,6 +3,9 @@ import java.util.Random;
 public class BankClientState {
 
     private String BankClientID;
+    private int TransactionAmount = 0;
+    private int TransactionID = 0;
+    private String TranferClientID = null;
 
     private static final int IDENTIFICATION_STATE = 0;
     private static final int BALANCE_CHECK_STATE = 1;
@@ -40,6 +43,7 @@ public class BankClientState {
                 break;
             case CLIENT_TRANSACTION_REQUEST_STATE:
                 if (MessageFromServer.equalsIgnoreCase("What do you want?")){
+                    transactionDetails();
                     output = responses[1];
                     currentState = CLIENT_REQUEST_STATE;
                 }
@@ -108,13 +112,42 @@ public class BankClientState {
         return output;
     }
 
+    private void transactionDetails() {
+    TransactionID = RandomTransactionSelector();
+    if (TransactionID == 3){
+        TranferClientID = RandomClientIDSelector();
+    }
+        TransactionAmount = RandomTransactionAmountGenerator();
+    }
+
     private int RandomTransactionSelector(){
         return new Random().nextInt(3);
+    }
+
+    private String RandomClientIDSelector(){
+        String transferClientID = null;
+        switch (new Random().nextInt(3)){
+            case 0:
+                transferClientID = "Client1";
+                break;
+            case 1:
+                transferClientID = "Client2";
+                break;
+            case 2:
+                transferClientID = "Client3";
+                break;
+        }
+        if (transferClientID.contentEquals(BankClientID)){
+            RandomClientIDSelector();
+        }
+        return transferClientID;
     }
 
     private int RandomTransactionAmountGenerator(){
         return new Random().nextInt();
     }
+
+
 
 }
 
