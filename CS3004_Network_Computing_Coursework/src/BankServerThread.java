@@ -39,7 +39,7 @@ public class BankServerThread extends Thread {
         BufferedReader in = new BufferedReader(new InputStreamReader(bankSocket.getInputStream()));
         String inputLine, outputLine;
         // Make the server internal state object
-        BankTransactionState bankTransactionState = new BankTransactionState(bankFundsCurrentStateObject);
+        BankTransactionState bankTransactionState = new BankTransactionState(bankFundsCurrentStateObject, out);
         // Get the first message
         outputLine = bankTransactionState.processInput(null);
         // And send it to the client
@@ -51,7 +51,7 @@ public class BankServerThread extends Thread {
         while ((inputLine = in.readLine()) != null) {
              outputLine = bankTransactionState.processInput(inputLine);
              out.println(outputLine);
-             if (outputLine.equals("Bye."))
+             if (outputLine.equals("BYE!!!")||outputLine.equalsIgnoreCase("ERROR!!!"))
                 break;
          }
          // Tidy up

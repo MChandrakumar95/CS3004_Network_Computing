@@ -9,7 +9,7 @@ public class MainProgram {
 
 	private static void randomSelector() {
 		Random randomGen = new Random();
-		int randomNum = 0; 
+		int randomNum;
 		for (int i = 0; i < 10; i++) {
 			randomNum = randomGen.nextInt(4);
 			actionClientInitiator(randomNum);

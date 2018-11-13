@@ -41,6 +41,12 @@ public class BankClient extends Thread {
 
 
 
+			fromServer = in.readLine();
+			System.out.println(ActionClientID + " received " + fromServer + " from BankServer");
+
+			BankClientState bankClientState = new BankClientState(ActionClientID);
+
+			fromUser = bankClientState.processInput(fromServer);
 
 			if (fromUser != null) {
 				System.out.println(ActionClientID + " sending " + fromUser + " to BankServer");

@@ -129,25 +129,7 @@ public class Funds{
 		}
 		return theOutput;
 	}
-	
-	public synchronized String triggerTransactionJob(int transactionID, String currectClientID, double amount){
-		String output = null;
-		switch (transactionID) {
-		case 1:
-			output = addFunds(currectClientID, amount);
-			break;
 
-		case 2:
-			output = withdrawFunds(currectClientID, amount);
-			break;
-
-		default:
-			output = "Invalid Transaction!!!";
-			break;
-		}
-		return output;
-	}
-	
 	public synchronized String triggerTransactionJob(int transactionID, String currectClientID, String transferToClientID, double amount){
 		String output = null;
 		switch (transactionID) {
