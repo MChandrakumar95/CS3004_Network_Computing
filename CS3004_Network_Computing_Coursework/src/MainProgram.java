@@ -17,7 +17,7 @@ public class MainProgram {
         String timestamp = ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
         ColourfulOutputs.log(TAG + " - Automated Client Application started at: " + timestamp, Process.CLIENT);
 //        randomSelector();
-        singleBankClientInitiator(0);
+        singleBankClientInitiator(1);
 //        singleBankClientInitiator(1);
 //        singleBankClientInitiator(2);
     }

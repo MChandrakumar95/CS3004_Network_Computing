@@ -17,11 +17,11 @@ class BankClient {
         BankClientID = bankClientID;
     }
 
-    public int getTransactionID() {
+    public String getTransactionID() {
         return TransactionID;
     }
 
-    public void setTransactionID(int transactionID) {
+    public void setTransactionID(String transactionID) {
         TransactionID = transactionID;
     }
 
@@ -41,7 +41,7 @@ class BankClient {
         TransferClientID = transferClientID;
     }
 
-    private int TransactionID;
+    private String TransactionID;
     private int TransactionAmount;
     private String TransferClientID;
 
@@ -54,11 +54,29 @@ class BankClient {
     }
 
     public void triggerBankClientThread() {
-        new BankClientThread(BankClientID, 0, TransactionAmount, TransferClientID).start();
+        new BankClientThread(BankClientID, TransactionID, TransactionAmount, TransferClientID).start();
     }
 
-    private synchronized int RandomTransactionSelector() {
-        return new Random(System.nanoTime()).nextInt(3);
+    private synchronized String RandomTransactionSelector() {
+    	String transactionID;
+//        int temptransactionID = new Random(System.nanoTime()).nextInt(3);
+    	int temptransactionID = 0;
+        switch (temptransactionID) {
+            case 0:
+            	transactionID = "Add_Funds";
+                break;
+            case 1:
+            	transactionID = "Withdraw_Funds";
+                break;
+            case 2:
+                transactionID = "Transfer_Funds";
+                break;
+            default:
+            	transactionID = "Add_Funds";
+                break;
+        }
+        ColourfulOutputs.log(TAG + " - " + "Random Transaction selected: " + transactionID, Process.CLIENT);
+        return transactionID;
     }
 
     private synchronized String RandomClientIDSelector(long Seed) {
@@ -98,13 +116,13 @@ class BankClient {
     }
 
     private synchronized int RandomTransactionAmountGenerator() {
-        return Math.abs(new Random(System.nanoTime()).nextInt());
+        return Math.abs(new Random(System.nanoTime()).nextInt(500));
     }
 
     public void randomTransactionDetailsGenerator() {
         TransactionID = RandomTransactionSelector();
         ColourfulOutputs.log(TAG + " - " + "Transaction is " + getTransaction(TransactionID), Process.CLIENT);
-        if (TransactionID == 2) {
+        if (TransactionID.contains("Transfer_Funds")) {
             TransferClientID = TransferClientIDGenerator();
         }
         TransactionAmount = RandomTransactionAmountGenerator();
@@ -112,19 +130,19 @@ class BankClient {
     }
 
     private void forceAddFunds() {
-        TransactionID = 0;
+        TransactionID = "Add_Funds";
         TransactionAmount = RandomTransactionAmountGenerator();
         displayTransactionAmountMessage();
     }
 
     private void forceWithdrawFunds() {
-        TransactionID = 1;
+        TransactionID = "Withdraw_Funds";
         TransactionAmount = RandomTransactionAmountGenerator();
         displayTransactionAmountMessage();
     }
 
     private void forceTransferFunds() {
-        TransactionID = 2;
+        TransactionID = "Transfer_Funds";
         TransferClientID = TransferClientIDGenerator();
         TransactionAmount = RandomTransactionAmountGenerator();
         displayTransactionAmountMessage();
@@ -134,16 +152,16 @@ class BankClient {
         ColourfulOutputs.log(TAG + " - " + "Transaction Amount is " + TransactionAmount, Process.CLIENT);
     }
 
-    private String getTransaction(int transactionID) {
+    private String getTransaction(String transactionID) {
         String transactionText;
         switch (transactionID) {
-            case 0:
+            case "Add_Funds":
                 transactionText = "Add Funds";
                 break;
-            case 1:
+            case "Withdraw_Funds":
                 transactionText = "Withdrawal of Funds";
                 break;
-            case 2:
+            case "Transfer_Funds":
                 transactionText = "Transfer Funds";
                 break;
             default:

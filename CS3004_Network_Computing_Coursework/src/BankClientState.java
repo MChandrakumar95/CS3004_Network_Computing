@@ -18,7 +18,7 @@ class BankClientState {
 
 	private String BankClientID;
 	private int TransactionAmount = 0;
-	private int TransactionID = 0;
+	private String TransactionID = "Add_Funds";
 	private String TransferClientID = null;
 
 	// The different client states.
@@ -33,7 +33,7 @@ class BankClientState {
 
 	private int currentState = IDENTIFICATION_STATE;
 
-	BankClientState(String BankClientID, int TransactionID, int TransactionAmount, String TransferClientID) {
+	BankClientState(String BankClientID, String TransactionID, int TransactionAmount, String TransferClientID) {
         this.BankClientID = BankClientID;
         this.TransactionID = TransactionID;
         this.TransactionAmount = TransactionAmount;
@@ -62,7 +62,7 @@ class BankClientState {
 			break;
 		case CLIENT_TRANSACTION_REQUEST_STATE:
 			if (MessageFromServer.equalsIgnoreCase("What do you want?")) {
-				if (TransactionID == 2) {
+				if (TransactionID.contains("Transfer_Funds")) {
 					output = String.valueOf(TransactionID);
 					currentState = TRANSFER_TO_CLIENT_ID_STATE;
 				} else {

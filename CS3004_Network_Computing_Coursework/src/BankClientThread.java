@@ -17,14 +17,14 @@ public class BankClientThread extends Thread {
     // This private variable stores the Bank Client's ID. e.g "Client1" or
     // "Client2" or "Client3"
     private String BankClientID;
-    private int TransactionID;
+    private String TransactionID;
     private int TransactionAmount;
     private String TransferClientID;
 
     private static final String TAG = "BankClient_Class";
 
     // Bank Client Thread Constructor
-    BankClientThread(String BankClientID, int TransactionID, int TransactionAmount, String TransferClientID) {
+    BankClientThread(String BankClientID, String TransactionID, int TransactionAmount, String TransferClientID) {
         this.BankClientID = BankClientID;
         this.TransactionID = TransactionID;
         this.TransactionAmount = TransactionAmount;

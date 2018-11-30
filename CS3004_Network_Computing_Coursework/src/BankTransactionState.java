@@ -32,7 +32,7 @@ class BankTransactionState {
 
     private String ClientID = null;
     private String TransferToClientID = null;
-    private int transactionID;
+    private String transactionID;
     private int transactionAmount;
 
     private String[] responses = {"Identify Yourself", "What do you want?", "What is the Transaction Amount?",
@@ -66,11 +66,11 @@ class BankTransactionState {
                 }
                 break;
             case CLIENT_REQUEST_STATE:
-                if (InputData.equalsIgnoreCase("0") || InputData.equalsIgnoreCase("1") || InputData.equalsIgnoreCase("2")) {
+                if (InputData.equalsIgnoreCase("Add_Funds") || InputData.equalsIgnoreCase("Withdraw_Funds") || InputData.equalsIgnoreCase("Transfer_Funds")) {
                     try {
-                        transactionID = Integer.parseInt(InputData);
+                        transactionID = String.valueOf(InputData);
 
-                        if (transactionID != 2) {
+                        if (!transactionID.equalsIgnoreCase("Transfer_Funds")) {
                             output = responses[2];
                             state = TRANSACTION_AMOUNT_STATE;
                         } else {

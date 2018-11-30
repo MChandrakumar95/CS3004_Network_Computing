@@ -11,9 +11,9 @@ class Funds {
 
     private static final String TAG = "Funds_Class";
 
-    private double client1Funds = 100;
-    private double client2Funds = 100;
-    private double client3Funds = 100;
+    private int client1Funds = 100;
+    private int client2Funds = 100;
+    private int client3Funds = 100;
     // This is true only when a lock has been acquired otherwise it will be
     // false.
     private boolean accessing = false;
@@ -43,7 +43,7 @@ class Funds {
         ColourfulOutputs.log(TAG + " - " + me.getName() + " released a lock!", Process.SERVER);
     }
 
-    private synchronized String addFunds(String clientID, double amountToAdd) {
+    private synchronized String addFunds(String clientID, int amountToAdd) {
         String theOutput;
         switch (clientID) {
             case "Client1":
@@ -75,7 +75,7 @@ class Funds {
         return theOutput;
     }
 
-    private synchronized String withdrawFunds(String clientID, double amountToWithdraw) {
+    private synchronized String withdrawFunds(String clientID, int amountToWithdraw) {
         String theOutput = null;
         switch (clientID) {
             case "Client1":
@@ -108,7 +108,7 @@ class Funds {
     }
 
     private synchronized String transferFunds(String transferFromClientID, String transferToClientID,
-                                              double amountToTransfer) {
+                                              int amountToTransfer) {
         String theOutput = null;
         switch (transferFromClientID) {
             case "Client1":
@@ -176,19 +176,19 @@ class Funds {
         return theOutput;
     }
 
-    synchronized String triggerTransactionJob(int transactionID, String currentClientID, String transferToClientID,
-                                              double amount) {
+    synchronized String triggerTransactionJob(String transactionID, String currentClientID, String transferToClientID,
+                                              int amount) {
         String output;
         switch (transactionID) {
-            case 0:
+            case "Add_Funds":
                 output = addFunds(currentClientID, amount);
                 break;
 
-            case 1:
+            case "Withdraw_Funds":
                 output = withdrawFunds(currentClientID, amount);
                 break;
 
-            case 2:
+            case "Transfer_Funds":
                 output = transferFunds(currentClientID, transferToClientID, amount);
                 break;
 
