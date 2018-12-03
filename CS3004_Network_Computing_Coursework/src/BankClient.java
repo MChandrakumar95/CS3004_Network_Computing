@@ -61,7 +61,7 @@ class BankClient {
 
 	private synchronized String RandomTransactionSelector() {
 		String transactionID;
-		 int temptransactionID = new Random(System.nanoTime()).nextInt(3);
+		int temptransactionID = new Random(System.nanoTime()).nextInt(3);
 		switch (temptransactionID) {
 		case 0:
 			transactionID = "Add_Funds";
@@ -76,14 +76,14 @@ class BankClient {
 			transactionID = "Add_Funds";
 			break;
 		}
-		ColourfulOutputs.log(TAG + " - " + "Random Transaction selected: " + transactionID, Process.CLIENT);
+		WindowLogger.log(TAG + " - " + "Random Transaction selected: " + transactionID, Process.CLIENT);
 		return transactionID;
 	}
 
 	private synchronized String RandomClientIDSelector(long Seed) {
 		String transferClientID;
-		 int clientID = new Random(Seed).nextInt(3);
-		ColourfulOutputs.log(TAG + " - " + "Temp Transfer ClientID: " + clientID, Process.CLIENT);
+		int clientID = new Random(Seed).nextInt(3);
+		WindowLogger.log(TAG + " - " + "Temp Transfer ClientID: " + clientID, Process.CLIENT);
 		switch (clientID) {
 		case 0:
 			transferClientID = "Client1";
@@ -122,7 +122,7 @@ class BankClient {
 
 	public void randomTransactionDetailsGenerator() {
 		TransactionID = RandomTransactionSelector();
-		ColourfulOutputs.log(TAG + " - " + "Transaction is " + getTransaction(TransactionID), Process.CLIENT);
+		WindowLogger.log(TAG + " - " + "Transaction is " + getTransaction(TransactionID), Process.CLIENT);
 		if (TransactionID.contains("Transfer_Funds")) {
 			TransferClientID = TransferClientIDGenerator();
 		}
@@ -150,7 +150,7 @@ class BankClient {
 	}
 
 	private void displayTransactionAmountMessage() {
-		ColourfulOutputs.log(TAG + " - " + "Transaction Amount is " + TransactionAmount, Process.CLIENT);
+		WindowLogger.log(TAG + " - " + "Transaction Amount is " + TransactionAmount, Process.CLIENT);
 	}
 
 	private String getTransaction(String transactionID) {

@@ -34,10 +34,10 @@ class BankClientState {
 	private int currentState = IDENTIFICATION_STATE;
 
 	BankClientState(String BankClientID, String TransactionID, int TransactionAmount, String TransferClientID) {
-        this.BankClientID = BankClientID;
-        this.TransactionID = TransactionID;
-        this.TransactionAmount = TransactionAmount;
-        this.TransferClientID = TransferClientID;
+		this.BankClientID = BankClientID;
+		this.TransactionID = TransactionID;
+		this.TransactionAmount = TransactionAmount;
+		this.TransferClientID = TransferClientID;
 	}
 
 	String processInput(String MessageFromServer) {
@@ -53,7 +53,7 @@ class BankClientState {
 			break;
 		case BALANCE_CHECK_STATE:
 			if (MessageFromServer.contains("Your balance is ")) {
-				ColourfulOutputs.log(TAG + " - " + MessageFromServer, Process.CLIENT);
+				WindowLogger.log(TAG + " - " + MessageFromServer, Process.CLIENT);
 				output = "Thank you for the Balance";
 				currentState = CLIENT_TRANSACTION_REQUEST_STATE;
 			} else {
@@ -144,7 +144,5 @@ class BankClientState {
 		}
 		return confirmation;
 	}
-
-
 
 }
