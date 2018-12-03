@@ -16,8 +16,8 @@ public class MainProgram {
     public static void main(String[] args) {
         String timestamp = ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
         ColourfulOutputs.log(TAG + " - Automated Client Application started at: " + timestamp, Process.CLIENT);
-//        randomSelector();
-        singleBankClientInitiator(1);
+        randomSelector();
+//        singleBankClientInitiator(0);
 //        singleBankClientInitiator(1);
 //        singleBankClientInitiator(2);
     }
@@ -49,13 +49,6 @@ public class MainProgram {
                 break;
             default:
                 break;
-        }
-    }
-
-    private static void colourTest() {
-        for (ValidColours validColours : ValidColours.values()) {
-            ColourfulOutputs colourfulOutput = new ColourfulOutputs(validColours);
-            colourfulOutput.outputColourfulText(validColours + "");
         }
     }
 

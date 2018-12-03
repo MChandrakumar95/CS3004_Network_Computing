@@ -83,21 +83,21 @@ class Funds {
                 ColourfulOutputs.log(TAG + " - " + clientID + "'s funds has been updated to " + client1Funds,
                         Process.SERVER);
                 theOutput = "Transaction is complete. " + amountToWithdraw
-                        + " has been added to your account. Your Account Balance is " + client1Funds;
+                        + " has been withdrawn from your account. Your Account Balance is " + client1Funds;
                 break;
             case "Client2":
                 client2Funds = client2Funds - amountToWithdraw;
                 ColourfulOutputs.log(TAG + " - " + clientID + "'s funds has been updated to " + client2Funds,
                         Process.SERVER);
                 theOutput = "Transaction is complete. " + amountToWithdraw
-                        + " has been added to your account. Your Account Balance is " + client2Funds;
+                        + " has been withdrawn from your account. Your Account Balance is " + client2Funds;
                 break;
             case "Client3":
                 client3Funds = client3Funds - amountToWithdraw;
                 ColourfulOutputs.log(TAG + " - " + clientID + "'s funds has been updated to " + client3Funds,
                         Process.SERVER);
                 theOutput = "Transaction is complete. " + amountToWithdraw
-                        + " has been added to your account. Your Account Balance is " + client3Funds;
+                        + " has been withdrawn from your account. Your Account Balance is " + client3Funds;
                 break;
             default:
                 ColourfulOutputs.log(TAG + " - " + "Invalid Bank Account!!!", Process.SERVER);
